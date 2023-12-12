@@ -65,8 +65,10 @@
       "mysql2": "^3.5.2",
       "pino": "^8.14.2",
       "pino-pretty": "^10.2.0",
+      "reflect-metadata": "^0.1.14",
       "sanitize": "^2.1.2",
       "sequelize": "^6.32.1",
+      "typeorm": "^0.3.17",
       "uniqid": "^5.4.0",
       "util": "^0.12.5",
       "uuid": "^9.0.0"

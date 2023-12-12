@@ -15,7 +15,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const methodOverride = require('method-override');
 const cors = require('cors');
-// const db = require('./api/data');
+const db = require('./api/db');
 
 const app = express();
 const port = process.env.PORT || 80;
@@ -41,8 +41,10 @@ app.use(methodOverride());
 
 app.use('/', rateLimiter, cors(), routes);
 
+db.dataLoader();
+
 app.listen(port, () => {
    LoggerService.info(
-      `Application Is Running... ${ConfigService.settings.APP_NAME} v${ConfigService.settings.APP_VERSION} | ${ConfigService.settings.NODE_ENV} environment on port ${port}`,
+      `Starting application... ${ConfigService.settings.APP_NAME} v${ConfigService.settings.APP_VERSION} | ${ConfigService.settings.NODE_ENV} environment on port ${port}`,
    );
 });
