@@ -17,8 +17,7 @@ const ConfigService = {
       APP_VERSION: env.APP_VERSION,
    },
 
-   constants: {
-   }
+   constants: {},
 };
 
 module.exports = ConfigService;

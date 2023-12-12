@@ -39,16 +39,7 @@ app.use(bodyParser.json({ limit: '500mb' })); // parse application/json
 app.use(bodyParser.json({ type: 'application/vnd.api+json', limit: '500mb' })); // parse application/vnd.api+json as json
 app.use(methodOverride());
 
-
 app.use('/', rateLimiter, cors(), routes);
-
-// db.sequelize
-//    .authenticate()
-//    .then(() => {
-//       LoggerService.trace('Connected to the database.');
-//       // db.sequelize.sync();
-//    })
-//    .catch((err) => LoggerService.error('Unable to connect to the database:', err));
 
 app.listen(port, () => {
    LoggerService.info(

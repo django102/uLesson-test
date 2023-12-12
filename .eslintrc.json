@@ -1,29 +1,28 @@
 {
-    "env": {
-       "commonjs": true,
-       "es2021": true,
-       "node": true
-    },
-    "extends": "eslint:recommended",
-    "parserOptions": {
-       "ecmaVersion": "latest"
-    },
-    "plugins": ["node", "no-only-tests"],
-    "rules": {
-       "indent": "off",
-       // "linebreak-style": ["error", "unix"],
-       "quotes": ["warn", "single"],
-       "semi": ["error", "always"],
-       "no-console": "error",
-       "no-only-tests/no-only-tests": "error"
-    },
-    "overrides": [
-       {
-          "files": ["*.test.js"],
-          "rules": {
-             "no-undef": "off"
-          }
-       }
-    ]
- }
- 
+   "env": {
+      "commonjs": true,
+      "es2021": true,
+      "node": true
+   },
+   "extends": "eslint:recommended",
+   "parserOptions": {
+      "ecmaVersion": "latest"
+   },
+   "plugins": ["node", "no-only-tests"],
+   "rules": {
+      "indent": "off",
+      // "linebreak-style": ["error", "unix"],
+      "quotes": ["warn", "single"],
+      "semi": ["error", "always"],
+      "no-console": "error",
+      "no-only-tests/no-only-tests": "error"
+   },
+   "overrides": [
+      {
+         "files": ["*.test.js"],
+         "rules": {
+            "no-undef": "off"
+         }
+      }
+   ]
+}

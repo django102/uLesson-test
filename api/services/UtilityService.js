@@ -12,15 +12,15 @@ const UtilityService = {
    generateRandomString: (length = 36, casing = 'lower') => {
       return chance.string({ length, casing, alpha: true, numeric: true });
    },
-   
+
    generateCode: (length = 12) => {
       return chance.string({ length, casing: 'lower', alpha: true, numeric: true });
    },
-   
+
    generateOtp: (length = 6) => {
       return chance.string({ length, casing: 'lower', alpha: false, numeric: true });
    },
-   
+
    slugify: (str) => {
       if (!str) return null;
 
@@ -37,7 +37,7 @@ const UtilityService = {
             .replace(/-+$/, '')
       );
    },
-   
+
    isValidEmail: (email) => {
       const validEmail = new RegExp(
          // eslint-disable-next-line no-useless-escape
@@ -45,13 +45,13 @@ const UtilityService = {
       );
       return validEmail.test(email);
    },
-   
+
    isAlphaNumeric: (value) => /^[a-z0-9]+$/i.test(value),
    isNumericString: (value) => /^\d+$/.test(value),
    isNumber: (value) => !isNaN(value),
    isInEnum: (Enum, value) => Enum.includes(value),
    isDateValid: (dateStr) => !isNaN(new Date(dateStr)),
-   
+
    isValidUrl: (urlString) => {
       try {
          new URL(urlString);
@@ -61,7 +61,7 @@ const UtilityService = {
 
       return true;
    },
-   
+
    isValidHttpsUrl: (urlString) => {
       let url;
 
@@ -73,7 +73,7 @@ const UtilityService = {
 
       return url.protocol === 'https:';
    },
-   
+
    isValidDate: (dateString) => {
       // Define a regular expression for the expected date format (YYYY-MM-DD)
       const datePattern = /^\d{4}-\d{2}-\d{2}$/;
@@ -94,7 +94,7 @@ const UtilityService = {
          date.getDate() === parseInt(dateString.substring(8, 10))
       );
    },
-   
+
    getCurrentDate: () => {
       const today = new Date();
 
@@ -104,7 +104,7 @@ const UtilityService = {
 
       return `${year}-${month}-${day}`;
    },
-   
+
    getUniqueKeysFromArray: (arr, field) => {
       const uniqueValues = new Set();
 
@@ -120,7 +120,7 @@ const UtilityService = {
       // Use the every method to check if all elements in the array are in the allowed set
       return arr.every((element) => allowedSet.includes(element));
    },
-   
+
    arraysAreEqual: (arr1, arr2) => {
       if (arr1.length !== arr2.length) {
          return false; // Arrays have different lengths, they can't be the same
