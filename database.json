@@ -1,0 +1,42 @@
+{
+    "defaultEnv": { "ENV": "NODE_ENV" },
+    "dev": {
+       "driver": "mysql",
+       "multipleStatements": true,
+       "host": {
+          "ENV": "DB_HOST"
+       },
+       "database": {
+          "ENV": "DB_DATABASE"
+       },
+       "port": {
+          "ENV": "DB_PORT"
+       },
+       "user": {
+          "ENV": "DB_USER"
+       },
+       "password": {
+          "ENV": "DB_PASSWORD"
+       }
+    },
+    "prod": {
+       "driver": "mysql",
+       "multipleStatements": true,
+       "host": {
+          "ENV": "DB_HOST"
+       },
+       "database": {
+          "ENV": "DB_DATABASE"
+       },
+       "port": {
+          "ENV": "DB_PORT"
+       },
+       "user": {
+          "ENV": "DB_USER"
+       },
+       "password": {
+          "ENV": "DB_PASSWORD"
+       }
+    }
+ }
+ 

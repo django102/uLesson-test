@@ -1,0 +1,6 @@
+--reporter spec
+--slow 75
+--timeout 5000
+--no-deprecation
+--timeout 60000
+--exit

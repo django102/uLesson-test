@@ -1,0 +1,10 @@
+{
+    "source": "./api",
+    "destination": "./es-docs",
+    "plugins": [
+       {
+          "name": "esdoc-standard-plugin"
+       }
+    ]
+ }
+ 

@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+sh .scripts/disallow-merge-conflicts.sh && npx lint-staged && npm run lint 

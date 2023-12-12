@@ -1,0 +1,27 @@
+dist/
+node_modules/
+bower_components
+scratch.json
+.env
+coverage/
+.tmp
+.github/
+.vscode/
+
+package-lock.json
+
+.DS_STORE
+.tmp
+dump.rdb
+
+#code coverage files
+.nyc_output/*
+coverage/*
+.env
+local.env
+lib-cov
+*.seed
+*.log
+*.out
+*.pid
+npm-debug.log
