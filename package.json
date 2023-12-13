@@ -78,6 +78,7 @@
       "babel-eslint": "^10.1.0",
       "babel-plugin-istanbul": "^6.1.1",
       "barrels": "^0.0.5",
+      "chai": "^4.3.10",
       "esdoc": "^1.1.0",
       "esdoc-standard-plugin": "^1.0.0",
       "eslint": "^8.46.0",
