@@ -2,9 +2,44 @@
 
 uLesson Snr. Backend Eng Test
 
-Node Version: 20.10.0
+### Dependencies
 
-## Database Migrations
+-  Node 20.10.0
+-  MySQL 8
+-  Redis 7
+
+### Cloning the Repository
+
+Open your terminal and type
+`https://github.com/django102/uLesson-test.git`
+
+### Commands
+
+1. `npm install` - Installs all dependencies
+2. `npm test` - Runs all tests
+3. `npm start` - Runs `node app.js`
+4. `npm dev-start` - Runs `nodemon`
+
+### Environment Variables
+
+| Key               | Description                   | Sample Value |
+| ----------------- | ----------------------------- | ------------ |
+| NODE_ENV          | Environment                   | dev          |
+| PORT              | Application Port              | 80           |
+| DB_MYSQL_HOST     | MySQL Host or Url             | localhost    |
+| DB_MYSQL_DATABASE | MySQL Database Name           |              |
+| DB_MYSQL_PORT     | MySQL Port                    | 3306         |
+| DB_MYSQL_USER     | MySQL User                    |              |
+| DB_MYSQL_PASSWORD | MySQL Password                |              |
+| REDIS_CLUSTER_IP  | Redis IP                      | 127.0.0.1    |
+| REDIS_PORT        | Redis Port                    | 6379         |
+| REDIS_USER        | User for Redis Instance       |              |
+| REDIS_PASSWORD    | Password to Redis Instance    |              |
+| APP_NAME          | Name of Application           | uLesson      |
+| APP_VERSION       | App Version                   | 1.0.0        |
+| JWT_SECRET        | Secret used for encoding JWTs |              |
+
+### Database Migrations
 
 You might need to make updates to the database structure during development. To ensure that these changes translate to production, a migration script will need to be created
 
