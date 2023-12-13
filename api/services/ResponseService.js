@@ -2,8 +2,8 @@ const LoggerService = require('./LoggerService');
 const ConfigService = require('./ConfigService');
 const { ResponseStatus } = ConfigService.constants;
 
-module.exports = {
-   json(status, res, message, data, meta) {
+const ResponseService = {
+   json: (status, res, message, data, meta) => {
       if (status > 201) {
          // add some logging here
       }
@@ -30,7 +30,7 @@ module.exports = {
       return res.status(status).json(response);
    },
 
-   nojson(status, res, message, data) {
+   nojson: (status, res, message, data) => {
       const response = data;
 
       // log response here
@@ -38,8 +38,10 @@ module.exports = {
       return res.status(status).json(response);
    },
 
-   handleError(res, err) {
+   handleError: (res, err) => {
       LoggerService.error(err);
-      return this.json(ResponseStatus.INTERNAL_SERVER_ERROR, res, `An error occurred: ${err.message}`);
+      return ResponseService.json(ResponseStatus.INTERNAL_SERVER_ERROR, res, `An error occurred: ${err.message}`);
    },
 };
+
+module.exports = ResponseService;

@@ -65,6 +65,7 @@
       "mysql2": "^3.5.2",
       "pino": "^8.14.2",
       "pino-pretty": "^10.2.0",
+      "redis": "4.6.11",
       "reflect-metadata": "^0.1.14",
       "sanitize": "^2.1.2",
       "sequelize": "^6.32.1",

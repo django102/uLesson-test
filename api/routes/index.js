@@ -3,6 +3,9 @@ const router = express.Router();
 
 const { UserController } = require('../controllers');
 
+// TODO: JWT authentication middleware
+// TODO: Permissions authorization middleware
+
 router
 
    // User Module

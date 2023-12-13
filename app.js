@@ -22,6 +22,7 @@ const port = process.env.PORT || 80;
 
 const routes = require('./api/routes');
 
+// eslint-disable-next-line no-unused-vars
 const { LoggerService, ConfigService } = require('./api/services');
 
 const rateLimit = require('express-rate-limit');

@@ -21,6 +21,13 @@ const ConfigService = {
          },
       },
 
+      REDIS: {
+         CLUSTER_IP: env.REDIS_CLUSTER_IP,
+         PORT: env.REDIS_PORT,
+         USER: env.REDIS_USER,
+         PASSWORD: env.REDIS_PASSWORD,
+      },
+
       JWT_SECRET: env.JWT_SECRET,
    },
 

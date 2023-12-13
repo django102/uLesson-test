@@ -32,15 +32,15 @@ const lessonSchema = Joi.object({
 });
 
 const ValidationService = {
-   validateUser(user) {
+   validateUser: (user) => {
       return userSchema.validate(user, { abortEarly: false });
    },
 
-   validateUserUpdate(user) {
+   validateUserUpdate: (user) => {
       return userUpdateSchema.validate(user, { abortEarly: false });
    },
 
-   validateLesson(lesson) {
+   validateLesson: (lesson) => {
       return lessonSchema.validate(lesson, { abortEarly: false });
    },
 };

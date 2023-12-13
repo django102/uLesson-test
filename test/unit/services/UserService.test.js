@@ -1,5 +1,11 @@
 const sinon = require('sinon');
-const { UserService, ResponseService, ValidationService, ConfigService } = require('../../../api/services');
+const {
+   UserService,
+   ResponseService,
+   ValidationService,
+   ConfigService,
+   CacheService,
+} = require('../../../api/services');
 const { UserRepository } = require('../../../api/repositories');
 
 describe('UserService', () => {
@@ -40,6 +46,7 @@ describe('UserService', () => {
 
          validationServiceStub.validateUser.returns(validatedUser);
          userRepositoryStub.upsert.resolves(upsertedUser);
+         const storeUserProfileStub = sinon.stub(CacheService, 'storeUserProfile').resolves();
 
          await UserService.register({ body }, res);
 
@@ -52,6 +59,7 @@ describe('UserService', () => {
             'User registration successful',
             upsertedUser,
          );
+         sinon.assert.calledOnce(storeUserProfileStub);
       });
 
       it('should handle validation error and return a bad request response', async () => {
@@ -100,6 +108,33 @@ describe('UserService', () => {
          sinon.assert.calledOnceWithExactly(validationServiceStub.validateUser, body);
          sinon.assert.calledOnceWithExactly(userRepositoryStub.upsert, validatedUser.value);
          sinon.assert.calledOnceWithExactly(responseServiceStub.handleError, res, repositoryError);
+      });
+
+      it('should handle cache error', async () => {
+         const body = {
+            userName: 'john_doe',
+            password: 'password123',
+            firstName: 'John',
+            lastName: 'Doe',
+            email: 'john.doe@example.com',
+            phone: '12345678901',
+            userRole: 'student',
+         };
+
+         const validatedUser = { value: body };
+         const upsertedUser = { ...body, id: 1 };
+
+         validationServiceStub.validateUser.returns(validatedUser);
+         userRepositoryStub.upsert.resolves(upsertedUser);
+
+         const storeUserProfileStub = sinon.stub(CacheService, 'storeUserProfile').rejects(new Error('Cache error'));
+
+         await UserService.register({ body }, res);
+
+         sinon.assert.calledOnceWithExactly(validationServiceStub.validateUser, body);
+         sinon.assert.calledOnceWithExactly(userRepositoryStub.upsert, validatedUser.value);
+         sinon.assert.calledOnce(storeUserProfileStub);
+         sinon.assert.calledWith(ResponseService.handleError, res, sinon.match.instanceOf(Error));
       });
    });
 
@@ -192,6 +227,32 @@ describe('UserService', () => {
    });
 
    describe('getProfile', () => {
+      it('should return a user profile from cache', async () => {
+         const userId = 1;
+         const user = {
+            id: userId,
+            userName: 'john_doe',
+            firstName: 'John',
+            lastName: 'Doe',
+            email: 'john.doe@example.com',
+            phone: '12345678901',
+            userRole: 'USER',
+         };
+
+         const getUserProfileStub = sinon.stub(CacheService, 'getUserProfile').resolves(user);
+
+         await UserService.getProfile({ params: { id: '123' } }, res);
+
+         sinon.assert.calledOnce(getUserProfileStub);
+         sinon.assert.calledOnceWithExactly(
+            responseServiceStub.json,
+            ConfigService.constants.ResponseStatus.OK,
+            res,
+            'User retrieved successfully',
+            user,
+         );
+      });
+
       it('should get user profile by ID and return a successful response', async () => {
          const userId = 1;
 
@@ -205,10 +266,12 @@ describe('UserService', () => {
             userRole: 'USER',
          };
 
+         const getUserProfileStub = sinon.stub(CacheService, 'getUserProfile').resolves(null);
          userRepositoryStub.findById.resolves(user);
 
          await UserService.getProfile({ params: { id: userId } }, res);
 
+         sinon.assert.calledOnce(getUserProfileStub);
          sinon.assert.calledOnceWithExactly(userRepositoryStub.findById, userId, true);
          sinon.assert.calledOnceWithExactly(
             responseServiceStub.json,
@@ -220,8 +283,11 @@ describe('UserService', () => {
       });
 
       it('should handle invalid user ID and return a bad request response', async () => {
+         const getUserProfileStub = sinon.stub(CacheService, 'getUserProfile');
+
          await UserService.getProfile({ params: {} }, res);
 
+         sinon.assert.notCalled(getUserProfileStub);
          sinon.assert.notCalled(userRepositoryStub.findById);
          sinon.assert.calledOnceWithExactly(
             responseServiceStub.json,
@@ -234,10 +300,12 @@ describe('UserService', () => {
       it('should handle user not found and return a not found response', async () => {
          const userId = 1;
 
+         const getUserProfileStub = sinon.stub(CacheService, 'getUserProfile').resolves(null);
          userRepositoryStub.findById.resolves(null);
 
          await UserService.getProfile({ params: { id: userId } }, res);
 
+         sinon.assert.calledOnce(getUserProfileStub);
          sinon.assert.calledOnceWithExactly(userRepositoryStub.findById, userId, true);
          sinon.assert.calledOnceWithExactly(
             responseServiceStub.json,
@@ -251,10 +319,12 @@ describe('UserService', () => {
          const userId = 1;
          const repositoryError = new Error('Repository error');
 
+         const getUserProfileStub = sinon.stub(CacheService, 'getUserProfile').resolves(null);
          userRepositoryStub.findById.rejects(repositoryError);
 
          await UserService.getProfile({ params: { id: userId } }, res);
 
+         sinon.assert.calledOnce(getUserProfileStub);
          sinon.assert.calledOnceWithExactly(userRepositoryStub.findById, userId, true);
          sinon.assert.calledOnceWithExactly(responseServiceStub.handleError, res, repositoryError);
       });
@@ -287,6 +357,7 @@ describe('UserService', () => {
          };
          const upsertedUser = { ...getProfileResponse.body, ...requestBody };
 
+         const storeProfileStub = sinon.stub(CacheService, 'storeUserProfile');
          validationServiceStub.validateUser.returns(validatedUpdateData);
          userRepositoryStub.upsert.resolves(upsertedUser);
          userRepositoryStub.findById.resolves(getProfileResponse.body);
@@ -300,6 +371,7 @@ describe('UserService', () => {
             validatedUpdateData.value,
          );
          sinon.assert.calledOnceWithExactly(userRepositoryStub.findById, userId, true);
+         sinon.assert.calledOnce(storeProfileStub);
          sinon.assert.calledOnceWithExactly(
             responseServiceStub.json,
             ConfigService.constants.ResponseStatus.OK,
@@ -319,10 +391,12 @@ describe('UserService', () => {
          const validatedUpdateData = { error: { message: '' } };
 
          validationServiceStub.validateUser.returns(validatedUpdateData);
+         const storeProfileStub = sinon.stub(CacheService, 'storeUserProfile');
 
          await UserService.updateProfile({ body: requestBody, params: { id: userId } }, res);
 
          sinon.assert.calledOnceWithExactly(validationServiceStub.validateUser, requestBody);
+         sinon.assert.notCalled(storeProfileStub);
          sinon.assert.notCalled(userRepositoryStub.upsert);
          sinon.assert.notCalled(userRepositoryStub.findById);
          sinon.assert.calledOnceWithExactly(
@@ -349,9 +423,11 @@ describe('UserService', () => {
 
          validationServiceStub.validateUser.returns({ value: requestBody });
          userRepositoryStub.findById.rejects(validationError);
+         const storeProfileStub = sinon.stub(CacheService, 'storeUserProfile');
 
          await UserService.updateProfile({ body: requestBody, params: { id: userId } }, res);
 
+         sinon.assert.notCalled(storeProfileStub);
          sinon.assert.calledOnceWithExactly(validationServiceStub.validateUser, requestBody);
          sinon.assert.notCalled(userRepositoryStub.upsert);
       });

@@ -1,11 +1,12 @@
 const { UserRepository } = require('../repositories');
 const ResponseService = require('./ResponseService');
 const ValidationService = require('./ValidationService');
+const CacheService = require('./CacheService');
 const ConfigService = require('./ConfigService');
 const { ResponseStatus } = ConfigService.constants;
 
 const UserService = {
-   async register({ body }, res) {
+   register: async ({ body }, res) => {
       try {
          const { value: user, error } = ValidationService.validateUser(body);
          if (error) {
@@ -13,13 +14,15 @@ const UserService = {
          }
 
          const registeredUser = await UserRepository.upsert(user);
+         await CacheService.storeUserProfile(registeredUser.id, registeredUser);
+
          return ResponseService.json(ResponseStatus.OK, res, 'User registration successful', registeredUser);
       } catch (err) {
          ResponseService.handleError(res, err);
       }
    },
 
-   async login({ body }, res) {
+   login: async ({ body }, res) => {
       try {
          if (!body || !body.username || !body.password) {
             return ResponseService.json(ResponseStatus.BAD_REQUEST, res, 'Username and Password are required');
@@ -45,14 +48,16 @@ const UserService = {
       }
    },
 
-   async getProfile({ params }, res) {
+   getProfile: async ({ params }, res) => {
       try {
          const userId = params.id;
          if (!userId) {
             return ResponseService.json(ResponseStatus.BAD_REQUEST, res, 'User Id is required');
          }
 
-         const user = await UserRepository.findById(userId, true);
+         const cachedUser = await CacheService.getUserProfile(userId);
+
+         const user = cachedUser || (await UserRepository.findById(userId, true));
          if (!user) {
             return ResponseService.json(ResponseStatus.NOT_FOUND, res, 'User not found');
          }
@@ -63,7 +68,7 @@ const UserService = {
       }
    },
 
-   async updateProfile({ body, params }, res) {
+   updateProfile: async ({ body, params }, res) => {
       try {
          const { value: updateData, error } = ValidationService.validateUser(body);
          if (error) {
@@ -76,6 +81,8 @@ const UserService = {
          }
 
          const updatedUser = await UserRepository.upsert(user, updateData);
+         await CacheService.storeUserProfile(updatedUser.id, updatedUser);
+
          return ResponseService.json(ResponseStatus.OK, res, 'User profile update successful', updatedUser);
       } catch (err) {
          ResponseService.handleError(res, err);
