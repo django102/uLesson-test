@@ -1,6 +1,6 @@
 const { EntitySchema } = require('typeorm');
 
-const { ConfigService } = require('../services');
+const ConfigService = require('../services/ConfigService');
 const { UserRole } = ConfigService.constants;
 
 const userSchema = new EntitySchema({

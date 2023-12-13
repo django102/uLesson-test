@@ -1,0 +1,79 @@
+[
+   {
+      "id": 1,
+      "username": "amet",
+      "password": "amet",
+      "firstName": "Constance",
+      "lastName": "Hobbs",
+      "email": "constancehobbs@springbee.com",
+      "phone": 2348096946525,
+      "userRole": "student",
+      "isActive": false
+   },
+   {
+      "id": 2,
+      "username": "laborum",
+      "password": "aliqua",
+      "firstName": "Mathis",
+      "lastName": "Patterson",
+      "email": "mathispatterson@springbee.com",
+      "phone": 2348081944332,
+      "userRole": "instructor",
+      "isActive": true
+   },
+   {
+      "id": 3,
+      "username": "ullamco",
+      "password": "laborum",
+      "firstName": "Marla",
+      "lastName": "Stokes",
+      "email": "marlastokes@springbee.com",
+      "phone": 2348088550535,
+      "userRole": "student",
+      "isActive": false
+   },
+   {
+      "id": 4,
+      "username": "elit",
+      "password": "aliquip",
+      "firstName": "Mitchell",
+      "lastName": "Stark",
+      "email": "mitchellstark@springbee.com",
+      "phone": 2348081750734,
+      "userRole": "student",
+      "isActive": true
+   },
+   {
+      "id": 5,
+      "username": "laborum",
+      "password": "ut",
+      "firstName": "Thompson",
+      "lastName": "Conway",
+      "email": "thompsonconway@springbee.com",
+      "phone": 2348089459622,
+      "userRole": "student",
+      "isActive": true
+   },
+   {
+      "id": 6,
+      "username": "ullamco",
+      "password": "adipisicing",
+      "firstName": "Santos",
+      "lastName": "Patel",
+      "email": "santospatel@springbee.com",
+      "phone": 2348094340322,
+      "userRole": "instructor",
+      "isActive": true
+   },
+   {
+      "id": 7,
+      "username": "ipsum",
+      "password": "occaecat",
+      "firstName": "Luz",
+      "lastName": "Beck",
+      "email": "luzbeck@springbee.com",
+      "phone": 2348095348020,
+      "userRole": "instructor",
+      "isActive": true
+   }
+]

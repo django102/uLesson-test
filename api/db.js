@@ -1,5 +1,5 @@
 const { DataSource } = require('typeorm');
-const { ConfigService } = require('./services');
+const ConfigService = require('./services/ConfigService');
 const models = require('./models');
 
 const { settings } = ConfigService;

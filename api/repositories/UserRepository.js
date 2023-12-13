@@ -1,5 +1,5 @@
 const { dataSource } = require('../db');
-const { User } = require('../models');
+const User = require('../models/User');
 
 const UserRepository = dataSource.getRepository(User).extend({
    async upsert(user, updates) {
@@ -10,7 +10,9 @@ const UserRepository = dataSource.getRepository(User).extend({
          return { ...user, ...updates };
       }
 
-      return this.save({ ...user, createdAt: new Date() });
+      const savedUser = this.save({ ...user, createdAt: new Date() });
+      this.removeSensitiveData(savedUser);
+      return savedUser;
    },
 
    async findById(id, removeSensitiveData = false) {

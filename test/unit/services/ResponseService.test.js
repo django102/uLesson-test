@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
-const { ResponseService } = require('../../../api/services');
+const { ResponseService, LoggerService, ConfigService } = require('../../../api/services');
 
 describe('ResponseService', () => {
    let res;
@@ -16,6 +16,7 @@ describe('ResponseService', () => {
 
       statusStub = sinon.stub(res, 'status').returns(res);
       jsonStub = sinon.stub(res, 'json').returns(res);
+      loggerErrorStub = sinon.stub(LoggerService, 'error');
    });
 
    afterEach(() => {
@@ -70,6 +71,24 @@ describe('ResponseService', () => {
 
          expect(statusStub.calledOnceWithExactly(status)).to.be.true;
          expect(jsonStub.calledOnceWithExactly(data)).to.be.true;
+      });
+   });
+
+   describe('handleError', () => {
+      it('should log the error and return an internal server error response', () => {
+         const err = new Error('Test error');
+
+         ResponseService.handleError(res, err);
+
+         sinon.assert.calledOnceWithExactly(loggerErrorStub, err);
+         sinon.assert.calledOnceWithExactly(statusStub, ConfigService.constants.ResponseStatus.INTERNAL_SERVER_ERROR);
+         sinon.assert.calledOnce(jsonStub);
+
+         const expectedResponse = {
+            status: false,
+            message: `An error occurred: ${err.message}`,
+         };
+         sinon.assert.calledOnceWithExactly(jsonStub, expectedResponse);
       });
    });
 });

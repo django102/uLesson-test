@@ -17,6 +17,15 @@ const userSchema = Joi.object({
       .required(),
 });
 
+const userUpdateSchema = Joi.object({
+   firstName: Joi.string().alphanum().required(),
+   lastName: Joi.string().alphanum().required(),
+   email: Joi.string().email().required(),
+   phone: Joi.string()
+      .regex(/^\d{11}$/)
+      .required(),
+});
+
 const lessonSchema = Joi.object({
    title: Joi.string().min(3).max(30).required(),
    instructor: Joi.number().required(),
@@ -25,6 +34,10 @@ const lessonSchema = Joi.object({
 const ValidationService = {
    validateUser(user) {
       return userSchema.validate(user, { abortEarly: false });
+   },
+
+   validateUserUpdate(user) {
+      return userUpdateSchema.validate(user, { abortEarly: false });
    },
 
    validateLesson(lesson) {
